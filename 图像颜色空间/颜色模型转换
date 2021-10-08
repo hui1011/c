@@ -1,0 +1,5 @@
+//cvtColor(src,dst,code,0)  
+//COLOR_BGR2GRAY = 6 彩色到灰度
+//COLOR_GRAY2BGR = 8 灰度到彩色
+//COLOR_BGR2HSV = 40 BGR到HSV
+//COLOR_HSV2BGR = 54 HSV到 BGR
