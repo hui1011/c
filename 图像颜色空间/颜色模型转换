@@ -1,5 +1,9 @@
 //cvtColor(src,dst,code,0)  
-//COLOR_BGR2GRAY = 6 彩色到灰度
-//COLOR_GRAY2BGR = 8 灰度到彩色
-//COLOR_BGR2HSV = 40 BGR到HSV
-//COLOR_HSV2BGR = 54 HSV到 BGR
+//COLOR_BGR2GRAY  彩色到灰度
+//COLOR_GRAY2BGR  灰度到彩色
+//COLOR_BGR2HSV   BGR到HSV
+//COLOR_HSV2BGR   HSV到 BGR
+
+convertTo(image, CV_32F)  
+convertTo(image, CV_8U)   转为无符号8位单通道
+
