@@ -1,0 +1,22 @@
+1.机器学习介绍
+  a.what is Machine Learning?
+    Looking for a function from data
+      eg. 1.Speech Recongnition
+           f("一段音频")="How are you"
+          2.Image Recongnition
+           f(" 猫的图片")="cat"
+  b.machine learning framework整个过程分成了三个步骤
+    step1: define a set of function
+    step2: goodness of function
+    step3: pick the best function
+  c. 机器学习相关技术
+     1.监督学习：regression，classifiaction，结构化学习。回归是建立模型进行预测的一种学习。
+       分类有Binary classification(二分类)和Multi-class classification(多分类)，
+       二分类是进行判断yes/no,多分类是进行选择（先分出很多的类别，再将数据对应到各个类别中）
+     2.半监督学习：有少量的labelled data，但是同时你又有大量的Unlabeled data，可以使用
+     3.迁移学习：虽然有大量数据，但其中包含许多无用的
+     4.无监督学习：完全没有任何label的情况下
+     5.强化学习：需要对手，通过不断训练并判断直到达到要求
+   
+2.为什么要学习机器学习
+  为机器挑选合适的model和loss function。不同的model和loss function适合解决不同的问题
