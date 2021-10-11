@@ -1,2 +1,2 @@
-# c
-learn c++
+# 学习
+learn 
