@@ -1,0 +1,86 @@
+图像像素最值及其位置
+minMaxLoc(src, &minv, &maxv, &minLoc, &maxLoc)
+src:单通道矩阵
+像素坐标轴是左上角为坐标原点
+
+计算图像的平均值和标准差
+平均值：表示整个图像的亮暗程度
+标准差：表示图像中明暗变化的对比程度
+mean（src）
+求取图像矩阵的每个通道的平均值（通道数1~4），函数返回值是cv::scalar类型的变量
+如：输入一个单通道平均值为1的图像，输出结果[1,0,0,0]
+meanStdDev(src,mean,stddev)
+
+eg.
+  void pixel_statistic_demo(Mat& image)
+ {
+  double minv, maxv;
+  Point minLoc, maxLoc;
+  std::vector<Mat> mv;
+  split(image, mv);
+  for (int i = 0; i < mv.size(); i++) 
+  {
+		minMaxLoc(mv[i], &minv, &maxv, &minLoc, &maxLoc); 
+		std::cout << "No. channels:" << i << " min value:" << minv << " max value:" << maxv << std::endl;
+	 }
+	 Mat mean, stddev;
+	 meanStdDev(image, mean, stddev);
+	 std::cout << "means:" << mean << std::endl;        //均值
+	 std::cout << " stddev:" << stddev << std::endl;    //标准差
+ }
+
+两幅图像的比较运算
+max(src1,src2,dst),min(src1,src2,dst)
+src1和src2通道数和数据类型需要一样，dst保留对应位置较大（较小）灰度值后的图像矩阵
+
+两幅图像的逻辑运算
+ bitwise_and(src1,src2,dst)
+ bitwise_xor(src1,src2,dst)
+ bitwise_or(src1,src2,dst)
+上面三个类似，都是针对两张图像的位操作
+ bitwise_not(src,dst)
+针对输入图像, 图像取反操作，二值图像分析中经常用
+eg.
+void bitwise_demo(Mat& image)
+{
+	Mat m1 = Mat::zeros(Size(256, 256), CV_8UC3);
+	Mat m2 = Mat::zeros(Size(256, 256), CV_8UC3);
+	rectangle(m1, Rect(100, 100, 80, 80), Scalar(255, 255, 0), -1, LINE_8, 0);  //-1填充，1绘制
+	rectangle(m2, Rect(150, 150, 80, 80), Scalar(0, 255, 255), -1, LINE_8, 0);
+	imshow("m1", m1);
+	imshow("m2", m2);
+	Mat dst;
+	bitwise_xor(m1, m2, dst);
+	imshow("像素位操作", dst);
+}
+
+图像二值化
+1.基本阈值操作
+threshold(src,dst,thresh,maxval,type)
+src:只能是CV_8U和CV_32F两种数据模型
+thresh:二值化的阈值
+maxval:二值化过程的最大值（在THRESH_BINARY 和THRESH_BINARY_INV中使用）
+type：二值化方法标志，如下
+THRESH_BINARY = 0  二值分割         (灰度值与thresh比较，灰度值大于thresh的，将灰度值改为maxval中的值，其他变为0)
+THRESH_BINARY_INV = 1 反向二值分割   与THRESH_BINARY相反
+THRESH_TRUNC = 2 截断               （灰度值与thresh比较，灰度值大于thresh的，将灰度值改为thresh中的值，其他不变）
+THRESH_TOZERO = 3 取零              （灰度值与thresh比较，灰度值大于thresh的，灰度值不变，其他的变为0）
+THRESH_TOZERO_INV = 4 反向取零       与THRESH_TOZERO相反
+
+2.自适应阈值算法
+  自适应阈值算法主要是基于均值实现，根据计算均值的方法不同分为盒子模糊均值与高斯模糊均值，然后使用原图减去均值图像，得到的差值图像进行自适应分割
+ void cv::adaptiveThreshold(src,dst, maxValue,adaptiveMethod,thresholdType,blockSize,C)
+ src:只能CV_8UC1
+ maxValue：二值化最大值
+ adaptiveMethod：ADAPTIVE_THRESH_GAUSSIAN_C 高斯法
+                 ADAPTIVE_THRESH_MEAN_C     均值法
+ thresholdType：THRESH_BINARY 二值图像 = 原图 – 均值图像 > -C ? 255 : 0
+                THRESH_BINARY_INV  二值图像 = 原图 – 均值图像 > -C ? 0 : 255
+ blockSize取值必须是奇数，C取值在10左右
+
+3.LUT查表法
+  LUT（src,lut,dst）
+  src:数据类型只能CV_8U
+  lut:256个像素灰度值的查找表
+
+
