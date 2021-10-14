@@ -1,0 +1,30 @@
+图像连接
+vconcat(src,nsrc,dst)   //纵向连接
+hconcat(src,nsrc,dst)   //横向连接
+
+图像尺寸变换
+resize(src,dst,Size(a,b),fx,fy,interpolation)
+
+eg.
+void resize_demo(Mat& image) 
+{
+	Mat zoomin, zoomout;
+	int h = image.rows;
+	int w = image.cols;
+	resize(image, zoomin, Size(w / 2, h / 2), 0, 0, INTER_LINEAR);
+	imshow("zoomin", zoomin);
+	resize(image, zoomout, Size(w * 1.5, h * 1.5), 0, 0, INTER_LINEAR);
+	imshow("zoomout", zoomout);
+}
+
+图像翻转变换
+flip(src,dst,flipcode)
+flipcode大于0，绕y轴翻转，等于0，绕x轴翻转，小于0，绕双轴翻转
+void flip_demo(Mat& image) 
+{
+	Mat dst;
+	// flip(image, dst, 0); // 上下翻转
+	// flip(image, dst, 1); // 左右翻转
+	flip(image, dst, -1); // 180°旋转
+	imshow("图像翻转", dst);
+}
