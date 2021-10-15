@@ -4,7 +4,10 @@ hconcat(src,nsrc,dst)   //横向连接
 
 图像尺寸变换
 resize(src,dst,Size(a,b),fx,fy,interpolation)
-
+INTER_NEAREST = 0
+INTER_LINEAR = 1
+INTER_CUBIC = 2
+INTER_LANCZOS4 = 4
 eg.
 void resize_demo(Mat& image) 
 {
@@ -27,4 +30,35 @@ void flip_demo(Mat& image)
 	// flip(image, dst, 1); // 左右翻转
 	flip(image, dst, -1); // 180°旋转
 	imshow("图像翻转", dst);
+}
+
+图像仿射变换
+getRotationMatrix2D(Point2f(a,b),angle,scale)
+Point2f:图像旋转的中心位置
+angle：图像旋转的角度，正为逆时针旋转
+scale：图像缩放
+warpAffine(src,dst,M,Size(a,b),flags,borderMode,Scalar())
+M: 2*3的变换矩阵，通过getRotationMatrix2D得到
+flags:INTER_NEAREST = 0
+      INTER_LINEAR = 1
+      INTER_CUBIC = 2
+      INTER_LANCZOS4 = 4
+borderModec：像素边界外推方法标志 //书P86 3-4
+Scalar()：填充边界颜色
+
+eg.
+void rotate_demo(Mat& image) //通过仿射变换实现图像旋转
+{
+	Mat dst, M;
+	int w = image.cols;
+	int h = image.rows;
+	M = getRotationMatrix2D(Point2f(w / 2, h / 2), 45, 1.0);
+	double cos = abs(M.at<double>(0, 0));
+	double sin = abs(M.at<double>(0, 1));
+	int nw = cos * w + sin * h;
+	int nh = sin * w + cos * h;
+	M.at<double>(0, 2) += (nw / 2 - w / 2);
+	M.at<double>(1, 2) += (nh / 2 - h / 2);
+	warpAffine(image, dst, M, Size(nw, nh), INTER_LINEAR, 0, Scalar(255, 255, 0));
+	imshow("旋转演示", dst);
 }
